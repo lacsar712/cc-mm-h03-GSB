@@ -12,8 +12,7 @@ const detailBox = document.querySelector("#detail");
 function paint(list) {
   rows.innerHTML = list
     .map((r) => {
-      const shown = r.ch4_text !== undefined && r.ch4_text !== null ? r.ch4_text : r.ch4_pct;
-      return `<tr data-id="${r.id}"><td><a href="#" data-open="${r.id}">${r.site}</a></td><td>${shown}</td><td class="${r.level === "报警" ? "alarm" : "ok"}">${r.level}</td><td>${r.note}</td></tr>`;
+      return `<tr data-id="${r.id}"><td><a href="#" data-open="${r.id}">${r.site}</a></td><td>${r.ch4_pct}</td><td class="${r.level === "报警" ? "alarm" : "ok"}">${r.level}</td><td>${r.note}</td></tr>`;
     })
     .join("");
   rows.querySelectorAll("[data-open]").forEach((a) => {
@@ -60,8 +59,7 @@ function connect() {
   const ws = new WebSocket(`${proto}://${location.host}/ws/alerts`);
   ws.onmessage = (ev) => {
     const row = JSON.parse(ev.data);
-    const shown = row.ch4_text !== undefined ? row.ch4_text : row.ch4_pct;
-    live.textContent = `刚推送：${row.site} ${shown} ${row.level}`;
+    live.textContent = `刚推送：${row.site} ${row.ch4_pct} ${row.level}`;
     load();
   };
 }
